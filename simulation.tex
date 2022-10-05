@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{\huge \textbf{Traffic Simulator Python}\\
+\Large Electrodynamics}
+\author{Diego Rodríguez}
+\newcommand\hmmax{0}
+\newcommand\bmmax{0}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+ \geometry{
+ letterpaper,
+ total={186mm,240mm},
+ left=15mm,
+ top=15mm,
+ }
+\usepackage{cancel}
+% \usepackage{CJKutf8}
+\usepackage[shortlabels]{enumitem}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{setspace}
+\usepackage{esint}
+\usepackage[dvipsnames]{xcolor}
+\pagecolor[RGB]{40,44,52} %black
+\color[RGB]{171,178,191} %grey
+\definecolor{txt}{RGB}{171,178,191}
+\definecolor{high-a}{RGB}{255,153,204}
+\definecolor{high-b}{RGB}{255,230,153}
+\definecolor{high-c}{RGB}{157,195,230}
+\usepackage{csquotes}
+\onehalfspacing
+\usepackage{siunitx}
+\sisetup{output-decimal-marker = {,}}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{bm}
+\begin{document}
+\newcommand\sol[1]{\begin{center}\fbox{\begin{minipage}{0.95\textwidth}\vspace*{0.25cm}#1\end{minipage}\vspace*{0.5cm}}\end{center}}
+\let\oldhat\hat
+\let\oldvec\vec
+\newcommand{\vect}[1]{\dot{\vec{#1}}}
+\newcommand{\vectt}[1]{\ddot{\vec{#1}}}
+\newcommand{\vecttt}[1]{\dddot{\vec{#1}}}   
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\renewcommand{\hat}[1]{\oldhat{\mathbf{#1}}}
+\newcommand{\norm}[1]{\left|#1\right|}
+\newcommand{\dev}[2]{\frac{d#1}{d#2}}
+\newcommand{\devp}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\devt}[3]{\left(\devp{#1}{#2}\right)_{#3}}
+\newcommand{\spur}[1]{\text{Spur}\left(#1\right)}
+\renewcommand{\mit}[1]{\left\langle#1\right\rangle}
+\newcommand{\Shat}{\oldhat{S}}
+\newcommand{\cte}{\text{cte}}
+\newcommand{\ten}[1]{\overleftrightarrow{\mathbf{#1}}}
+\newtheorem{thm}{Satz}[section]
+\theoremstyle{definition}
+\newtheorem{pub}[thm]{PÜ}
+\newtheorem{hub}[thm]{HÜ}
+\newtheorem{prob}[thm]{P}
+\numberwithin{equation}{section}
+\maketitle
+\section{IDM Model}
+We model streets as one dimensional lines with vehicles in it. Vehicles in a street are numbered so that the leading car, i.e. the one in front, has the number 0, and the car behind it 1, and so on. We now define the position of each car with $x_i$, taken at the back bumper, and the length of the car with $l_i$. So the bumper to bumper distance between two adjacent vehicles, $i$ and $i-1$ (with $i-1$ being in front of $i$), would be given as:
+\begin{equation}
+    s_i=x_i-x_{i-1}-l_i
+    \label{bumper2b-dist}
+\end{equation}
+The velocity of each vehicle is given as $v_i$, so that the difference in velocities from two adjacent vehicles like before would be
+\begin{equation}
+    \Delta v_i=v_i-v_{i-1}
+    \label{delta-v}
+\end{equation}
+We now build the Intelligent Driver Model (IDM) as follows:
+\begin{equation}
+    \dev{v_i}{t}=a_i\left[1-\left(\frac{v_i}{v_{0_i}}\right)^\delta-\left(\frac{s'(v_i,\Delta v_i)}{s_i}\right)^2\right]
+    \label{IDM-full}
+\end{equation}
+With
+$$s'(v_i,\Delta v_i)=s_{0_i}+v_iT_i+\frac{v_i\Delta v_i}{\sqrt{2a_ib_i}}$$
+Where:
+\begin{itemize}
+    \item $s_{0_i}$ is the minimum desired distance between vehicles $i$ and $i-1$
+    \item $v_{0_i}$ is the maximum desired speed of vehicle $i$
+    \item $\delta$ is the acceleration exponent that controls the smoothness of the acceleration
+    \item $T_i$ is the reaction time of the $i$-th vehicle driver
+    \item $a_i$ is the maximum acceleration for the vehicle $i$
+    \item $b_i$ is the comfortable decceleration for the vehicle $i$
+    \item $s'$ is the actual desired distance between vehicles $i$ and $i-1$
+\end{itemize}
+We could simplify the model as
+$$\dev{v_i}{t}=a_{\text{free road}}+a_{\text{interaction}}=a_f+\alpha$$
+With:
+\begin{equation}
+    a_f=a_i\left[1-\left(\frac{v_i}{v_{0_i}}\right)^\delta\right]
+    \label{free-road}
+\end{equation}
+\begin{equation}
+    \alpha=-a_i\left(\frac{s'(v_i,\Delta v_i)}{s_i}\right)^2
+    \label{interaction}
+\end{equation}
+\section{Traffic Light}
+Every Traffic Light will have two zones: a slow down zone and a stop zone. The first one is characterized by a slow down distance $d_{sd}$, which is the length of the zone, and a slow down factor $\beta$ that lowers the maximum speed:
+\begin{equation}
+    v_{0_i}:=\beta v_{0_i}
+    \label{slow-down}
+\end{equation}
+The stop zone has a stop distance $d_{st}$ in which vehicles stop through a damping force using $b_i$, the comfortable decceleration for vehicle $i$:
+\begin{equation}
+    \dev{v_i}{t}=-b_i\frac{v_i}{v_{0_i}}
+\end{equation}
+\section{Simulation}
+\begin{equation}
+    v(v+\Delta t)\approx v(t)+a(t)\cdot\Delta t
+\end{equation}
+\begin{equation}
+    x(t+\Delta t)\approx x(t)+v(t)\cdot\Delta t+a(t)\cdot\frac{\Delta t^2}{2}
+\end{equation}
+To avoid negative speeds, they will be set to zero, which leads to the equations:
+\begin{equation}
+    a(t)=-\frac{v(t)}{\Delta t}
+\end{equation}
+\begin{equation}
+    x(t+\Delta t)=x(t)-\frac{1}{2}\frac{v^2(t)}{a(t)}
+\end{equation}
+
+
+\end{document}

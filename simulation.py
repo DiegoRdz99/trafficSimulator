@@ -21,13 +21,13 @@ class Simulation:
         self.traffic_signals = []
 
     def create_road(self, start, end):
-        road = Road(start, end)
-        self.roads.append(road)
+        road = Road(start, end) # Create road object
+        self.roads.append(road) # Append road to roads list
         return road
 
     def create_roads(self, road_list):
         for road in road_list:
-            self.create_road(*road)
+            self.create_road(*road) # Create multiple roads from (start,end) pairs
 
     def create_gen(self, config={}):
         gen = VehicleGenerator(self, config)
@@ -43,7 +43,7 @@ class Simulation:
     def update(self):
         # Update every road
         for road in self.roads:
-            road.update(self.dt)
+            road.update(self.dt) # update roads
 
         # Add vehicles
         for gen in self.generators:
@@ -70,6 +70,9 @@ class Simulation:
                     # Add it to the next road
                     next_road_index = vehicle.path[vehicle.current_road_index]
                     self.roads[next_road_index].vehicles.append(new_vehicle)
+                else:
+                    road.flow += 1
+                    road.flow_time = road.flow/self.t
                 # In all cases, remove it from its road
                 road.vehicles.popleft() 
         # Increment time

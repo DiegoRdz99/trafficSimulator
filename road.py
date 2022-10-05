@@ -1,7 +1,7 @@
 from scipy.spatial import distance
 from collections import deque
 
-class Road:
+class Road: 
     def __init__(self, start, end):
         self.start = start
         self.end = end
@@ -9,6 +9,7 @@ class Road:
         self.vehicles = deque()
 
         self.init_properties()
+        self.flow = 0
 
     def init_properties(self):
         self.length = distance.euclidean(self.start, self.end)
@@ -30,7 +31,7 @@ class Road:
         return True
 
     def update(self, dt):
-        n = len(self.vehicles)
+        n = len(self.vehicles) # number of vehicles
 
         if n > 0:
             # Update first vehicle
