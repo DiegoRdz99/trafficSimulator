@@ -9,7 +9,10 @@ class Road:
         self.vehicles = deque()
 
         self.init_properties()
-        self.flow = 0
+        self.flow = 0 # Total flow of cars
+        self.flow_array = [] # Flow array, appends every time a car passes the road
+        self.flow_time = [] # Time array, "                                      "
+        self.density = [] # Density array, ""
 
     def init_properties(self):
         self.length = distance.euclidean(self.start, self.end)
