@@ -6,13 +6,13 @@ step = 30
 sim.create_roads([((st,50),(st+step,50)) for st in range(0,300,step)])
 # print([road.length for road in sim.roads])
 sim.create_gen({
-    'vehicle_rate' : 200,
+    'vehicle_rate' : 40,
     'vehicles':[
         [1,{'path':list(range(300//step))}]
     ]
 })
 
-sim.run(10000)
+sim.run(5000)
 
 # road.flow_array : array with flows (cars/time)
 # road.density : array with densities (no. of cars in road divided by road length)
@@ -24,8 +24,8 @@ times = [road.flow_time for road in sim.roads]
 
 n = 0
 
-plt.plot(times[n],flows[n],label='flow')
-plt.plot(times[n],densities[n],label='density')
+# plt.plot(times[n],flows[n],label='flow')
+# plt.plot(times[n],densities[n],label='density')
 plt.legend()
-# plt.plot(densities[0],flows[0])
+plt.scatter(densities[0],flows[0])
 plt.show()

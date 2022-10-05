@@ -12,7 +12,7 @@ class Road:
         self.flow = 0 # Total flow of cars
         self.flow_array = [] # Flow array, appends every time a car passes the road
         self.flow_time = [] # Time array, "                                      "
-        self.density = [] # Density array, ""
+        self.density = [] # Density array, "                                     "
 
     def init_properties(self):
         self.length = distance.euclidean(self.start, self.end)
@@ -33,12 +33,16 @@ class Road:
             return self.traffic_signal.current_cycle[i]
         return True
 
-    def update(self, dt):
+    def update(self, dt,SIM):
         n = len(self.vehicles) # number of vehicles
 
         if n > 0:
             # Update first vehicle
-            self.vehicles[0].update(None, dt)
+            try:
+                lead0 = SIM.roads[self.vehicles[0].path[self.vehicles[0].current_road_index+1]].vehicles[-1]
+            except:
+                lead0 = None
+            self.vehicles[0].update(lead0, dt)
             # Update other vehicles
             for i in range(1, n):
                 lead = self.vehicles[i-1]

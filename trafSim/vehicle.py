@@ -13,10 +13,10 @@ class Vehicle:
         self.init_properties()
 
     def set_default_config(self):    
-        self.l = 1  # Vehicle lenght
-        self.s0 = 1 # minimum desired vehicle distance (bumper to bumper)
+        self.l = 4  # Vehicle lenght
+        self.s0 = 4 # minimum desired vehicle distance (bumper to bumper)
         self.T = 1 # reaction time
-        self.v_max = 20 # max desired speed
+        self.v_max = 15 # max desired speed
         self.a_max = 1.44 # max aceleration
         self.b_max = 4.61 # comfortable deceleration
 
@@ -25,12 +25,12 @@ class Vehicle:
         self.parallel_roads = [] # parallel roads with same flow direction
 
         self.x = 0 # position
-        self.v = self.v_max # velocity (dx/dt)
-        # self.v = np.random.rand()*self.v_max*1.5 # randomly generated velocity
+        # self.v = self.v_max # velocity (dx/dt)
+        self.v = np.random.rand()*self.v_max*1.5 # randomly generated velocity
         self.a = 0 # acceleration (dv/dt -> d²x/dt²)
         self.stopped = False
 
-        # self.patience = np.empty_likerandom.uniform(0,1)
+        # self.patience = np.random.uniform(0,1)
 
     def init_properties(self):
         self.sqrt_ab = 2*np.sqrt(self.a_max*self.b_max) # sqrt factor

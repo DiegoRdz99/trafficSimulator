@@ -44,7 +44,7 @@ class Simulation:
     def update(self):
         # Update every road
         for road in self.roads:
-            road.update(self.dt) # update roads
+            road.update(self.dt,self) # update roads
 
         # Add vehicles
         for gen in self.generators:
