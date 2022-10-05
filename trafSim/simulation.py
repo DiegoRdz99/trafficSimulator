@@ -71,13 +71,12 @@ class Simulation:
                     # Add it to the next road
                     next_road_index = vehicle.path[vehicle.current_road_index]
                     self.roads[next_road_index].vehicles.append(new_vehicle)
-                else:
-                    road.flow += 1
-                    road.flow_array.append(road.flow/self.t)
-                    road.flow_time.append(self.t)
-                    road.density.append(len(road.vehicles)/road.length)
 
                 # In all cases, remove it from its road
+                road.flow += 1
+                road.flow_array.append(road.flow/self.t)
+                road.flow_time.append(self.t)
+                road.density.append(len(road.vehicles)/road.length)
                 road.vehicles.popleft() 
         # Increment time
         self.t += self.dt
@@ -87,16 +86,3 @@ class Simulation:
     def run(self, steps):
         for _ in range(steps):
             self.update()
-
-if __name__=='__main__':
-    sim = Simulation()
-    step = 25
-    sim.create_roads([((st,50),(st+step)) for st in range(0,300,step)])
-    sim.create_gen({
-        'vehicle_rate' : 60,
-        'vehicles':[
-            [1,{'path':list(range(300//25))}]
-        ]
-    })
-
-    sim.run(3000)
