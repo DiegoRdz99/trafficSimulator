@@ -77,7 +77,7 @@ class Simulation:
                 road.flow_array.append(road.flow/self.t)
                 road.flow_time.append(self.t)
                 road.density.append(len(road.vehicles)/road.length)
-                road.vehicles.popleft() 
+                road.vehicles.popleft()
         # Increment time
         self.t += self.dt
         self.frame_count += 1

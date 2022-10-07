@@ -38,6 +38,9 @@ class Road:
 
         if n > 0:
             # Update first vehicle
+            sum_index = 1
+            while len(SIM.roads[self.vehicles[0].path[self.vehicles[0].current_road_index+1]].vehicles)==0:
+                sum_index+=1
             try:
                 lead0 = SIM.roads[self.vehicles[0].path[self.vehicles[0].current_road_index+1]].vehicles[-1]
             except:
