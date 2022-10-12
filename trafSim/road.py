@@ -38,9 +38,9 @@ class Road:
 
         if n > 0:
             # Update first vehicle
-            sum_index = 1
-            while len(SIM.roads[self.vehicles[0].path[self.vehicles[0].current_road_index+1]].vehicles)==0:
-                sum_index+=1
+            # sum_index = 1
+            # while len(SIM.roads[self.vehicles[0].path[self.vehicles[0].current_road_index+1]].vehicles)==0:
+            #     sum_index+=1
             try:
                 lead0 = SIM.roads[self.vehicles[0].path[self.vehicles[0].current_road_index+1]].vehicles[-1]
             except:
@@ -67,3 +67,8 @@ class Road:
                    self.vehicles[0].x <= self.length - self.traffic_signal.stop_distance / 2:
                     # Stop vehicles in the stop zone
                     self.vehicles[0].stop()
+
+    def init_vehicles(self,vehicle_count):
+        for count in vehicle_count:
+
+            self.vehicles.append()

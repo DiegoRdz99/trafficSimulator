@@ -71,3 +71,32 @@ class Vehicle:
         self.v_max = self._v_max # For when vehicle leaves slow-down zone
         
 
+class RandomVehicle(Vehicle):
+    def __init__(self, config={}): 
+        # Set default configuration
+        self.set_default_config()
+
+        # Update configuration
+        for attr, val in config.items():
+            setattr(self, attr, val)
+
+        # Calculate properties
+        self.init_properties()
+
+    def set_default_config(self):
+        self.l = 4  # Vehicle lenght
+        self.s0 = 4 # minimum desired vehicle distance (bumper to bumper)
+        self.T = 1 # reaction time
+        self.v_max = 15 # max desired speed
+        self.a_max = 1.44 # max aceleration
+        self.b_max = 4.61 # comfortable deceleration
+
+        self.path = [0] # path to follow when multiple roads are connected, empty if it only follows one road)
+        self.current_road_index = 0 # index of road in path, starts at 0, increases by 1 every time it proceeds to the next road
+        self.parallel_roads = [] # parallel roads with same flow direction
+
+        self.x = 0 # position
+        # self.v = self.v_max # velocity (dx/dt)
+        self.v = np.random.rand()*self.v_max*1.5 # randomly generated velocity
+        self.a = 0 # acceleration (dv/dt -> d²x/dt²)
+        self.stopped = False

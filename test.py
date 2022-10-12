@@ -23,7 +23,6 @@ densities = [road.density for road in sim.roads]
 times = [road.flow_time for road in sim.roads]
 
 n = 0
-
 # plt.plot(times[n],flows[n],label='flow')
 # plt.plot(times[n],densities[n],label='density')
 plt.legend()
